@@ -14,17 +14,14 @@ function get_node_version() {
   if [[ $version =~ $re ]] ; then
     echo $version
   else
-    PACKAGE_VERSION=$(echo $(cat "$(pwd)/package.json" | grep "\"node\": " -m 1) | sed -r 's/(\"node\": |\"| )//g')
+    PACKAGE_FILE=$(cat "$(pwd)/package.json" 2> /dev/null | grep "\"node\": " -m 1)
+    PACKAGE_VERSION=$(echo $PACKAGE_FILE | sed -r 's/(\"node\": |\"| )//g')
     if ! [[ "$PACKAGE_VERSION" == "" ]] ; then
       echo ${PACKAGE_VERSION/v/}
       return
     fi
 
     CURRENT_VERSION=$(nvm current)
-    if [[ "$CURRENT_VERSION" == "" ]] ; then
-      logging "no current version - exit 1"
-      exit 1
-    fi
     echo ${CURRENT_VERSION/v/}
   fi
 }
@@ -50,6 +47,10 @@ function get_npm_args() {
 }
 
 NODE_VERSION=$(get_node_version "${1}")
+if [[ "$NODE_VERSION" == "" ]] ; then
+  logging "no current version - exit 1"
+  exit 1
+fi
 NPM_ARGS=$(get_npm_args "${1}" "${*}")
 
 echo "node version: ${NODE_VERSION}"

@@ -16,6 +16,8 @@ npmv 18 run build # run with node version 18
 npmv run build # run with current node version
 ```
 
+### Auto install
+If a version explicit is specified, it will be installed if not already present.
 
 #### with package.json
 
