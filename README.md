@@ -19,7 +19,7 @@ npmv run build # run with current node version
 
 #### with package.json
 
-You can specify in your package.json which node version to use for your project.
+You can specify in your "package.json" which node version to use for your project.
 Add the following to your "package.json":
 
 ```JSON
