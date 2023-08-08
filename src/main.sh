@@ -35,9 +35,10 @@ function set_env_vars() {
   fi
 }
 
-function get_npm_args() {
-  version=$1
-  all_args=$2
+function get_executable_args() {
+  args_split=(${1// / })
+  version=${args_split[0]}
+  all_args=$1
   re='^[0-9]+$'
   if [[ $version =~ $re ]] ; then
     echo ${all_args/$version /}
@@ -46,15 +47,17 @@ function get_npm_args() {
   fi
 }
 
-NODE_VERSION=$(get_node_version "${1}")
+args_split=(${2// / })
+NODE_VERSION=$(get_node_version "${args_split[0]}")
 if [[ "$NODE_VERSION" == "" ]] ; then
   logging "no current version - exit 1"
   exit 1
 fi
-NPM_ARGS=$(get_npm_args "${1}" "${*}")
+EXECUTABLE_ARGS=$(get_executable_args "${2}")
+EXECUTABLE_NAME="${1}"
 
 echo "node version: ${NODE_VERSION}"
-echo "npm args: ${NPM_ARGS}"
+echo "${EXECUTABLE_NAME} args: ${EXECUTABLE_ARGS}"
 echo "workspace: $(pwd)"
 
 cat << EOF
@@ -89,12 +92,13 @@ set_env_vars $NODE_VERSION
   exit 1
 }
 
-## run npm command
+## run executable command
 {
-  logging "NPM command: npm $NPM_ARGS"
-  npm $NPM_ARGS
+  logging "$EXECUTABLE_NAME command: $EXECUTABLE_NAME $EXECUTABLE_ARGS"
+  eval "$EXECUTABLE_NAME $EXECUTABLE_ARGS"
+
   exit 0
 } || {
-  logging "error in npm command - exit 1"
+  logging "error in $EXECUTABLE_NAME command - exit 1"
   exit 1
 }
