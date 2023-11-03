@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p ~/.local/bin/
+
 COMMANDS_LIST=( "node" "npm" "npx" )
 
 for (( i=0; i<${#COMMANDS_LIST[@]}; i++ ));

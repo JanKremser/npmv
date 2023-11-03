@@ -11,6 +11,11 @@ cd src
 ./setup.sh
 ```
 
+Add this line to your .bashrc file:
+```bash
+export PATH=$PATH:~/.local/bin/
+```
+
 ### Node Example:
 ```bash
 nodev [node_version] [node_commands]
