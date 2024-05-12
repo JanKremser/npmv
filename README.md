@@ -1,4 +1,4 @@
-# “oh my nvm!
+# “oh my nvm!”
 
 “oh my nvm!” is an nvm wrapper for easier use of different Node.js versions. 
 
